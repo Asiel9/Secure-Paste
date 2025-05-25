@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Secure Paste</title>
+    <style>
+        body {
+            font-family: 'Fira Code', monospace;
+            background-color: #0d0d0d;
+            color: #00ffcc;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ffcc;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .message-box {
+            background-color: #00ffcc;
+            color: #1a1a1a;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            max-width: 700px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        pre {
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            color: #00ffcc;
+            font-size: 1rem;
+            line-height: 1.6;
+            border: 1px solid #00ffcc55;
+            max-width: 700px;
+            overflow-x: auto;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.08);
+        }
+
+        @media (max-width: 600px) {
+
+            pre,
+            .message-box {
+                width: 100%;
+            }
+
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+
+    <h1> Le message secret:</h1>
+    <pre>{{ content }}</pre>
+</head>
+
+<body>
+    <div id="countdown"></div>
+
+    <script>
+        const expireAt = new Date("{{ expire_at }} UTC").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = expireAt - now;
+
+            if (distance <= 0) {
+                document.getElementById("countdown").innerHTML = "Message expiré.";
+                return;
+            }
+
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML =
+                `Expire dans : ${minutes}m ${seconds}s`;
+
+            setTimeout(updateCountdown, 1000);
+        }
+
+        updateCountdown();
+    </script>
+
+</body>
+
+</html>
